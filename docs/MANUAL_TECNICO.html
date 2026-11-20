@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>DOCUMENTO TÉCNICO N° 2: MANUAL TÉCNICO Y ARQUITECTURA DE SOFTWARE</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 20mm 15mm 20mm 15mm;
+            @bottom-center {
+                content: counter(page);
+                font-family: "Times New Roman", Times, serif;
+                font-size: 9pt;
+            }
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 11pt;
+            line-height: 1.45;
+            color: #111111;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* ESTILOS DE PORTADA FORMAL LEGAL */
+        .legal-cover {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            page-break-after: always;
+            min-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .legal-institution {
+            font-size: 14pt;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .legal-subinstitution {
+            font-size: 10pt;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            color: #222222;
+        }
+        .legal-title {
+            font-size: 17pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            line-height: 1.25;
+            border-top: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            padding: 14px 0;
+        }
+        .legal-subtitle {
+            font-size: 11.5pt;
+            font-weight: normal;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        .legal-box {
+            margin: 30px auto;
+            width: 90%;
+            border: 1px solid #000000;
+            padding: 18px 22px;
+            text-align: left;
+            font-size: 10pt;
+            line-height: 1.75;
+            background-color: #ffffff;
+        }
+        .legal-box-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .legal-footer {
+            margin-top: 50px;
+            font-size: 9.5pt;
+            text-transform: uppercase;
+        }
+
+        /* ENCABEZADOS Y JERARQUÍA */
+        h1 {
+            font-size: 14.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid #000000;
+            padding-bottom: 4px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            page-break-before: always;
+        }
+        h2 {
+            font-size: 12.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1px solid #444444;
+            padding-bottom: 3px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+        h3 {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+        h4 {
+            font-size: 10pt;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            page-break-after: avoid;
+        }
+        p {
+            margin-bottom: 10px;
+            text-indent: 15px;
+            text-align: justify;
+        }
+        ul {
+            margin-top: 5px;
+            margin-bottom: 12px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* TABLAS FORMALES LEGALES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 9pt;
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #000000;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 8.5pt;
+        }
+
+        /* CÓDIGO Y BLOQUES */
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #444444;
+            padding: 10px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 8.5pt;
+            line-height: 1.25;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 12px 0;
+            page-break-inside: avoid;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 9pt;
+            background: #f0f0f0;
+            padding: 1px 4px;
+            border: 1px solid #cccccc;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #000000;
+            margin: 20px 0;
+        }
+        .mermaid {
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        .mermaid svg {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="legal-cover">
+        <div>
+            <div class="legal-institution">REPÚBLICA DE COLOMBIA</div>
+            <div class="legal-subinstitution">DIRECCIÓN NACIONAL DE DERECHO DE AUTOR — REGISTRO DE SOPORTE LÓGICO</div>
+            <div class="legal-title">DOCUMENTO TÉCNICO N° 2: MANUAL TÉCNICO Y ARQUITECTURA DE SOFTWARE</div>
+            <div class="legal-subtitle">Registro de Propiedad Intelectual — AutoValua Pro: Sistema Actuarial, Económico y Administrativo de Devaluación Vehicular</div>
+            
+            <div class="legal-box">
+                <div class="legal-box-row"><strong>DENOMINACIÓN DE LA OBRA:</strong> <span>AUTOVALUA PRO (VEHICLE VALUATION &amp; DEPRECIATION SUITE)</span></div>
+                <div class="legal-box-row"><strong>CLASIFICACIÓN LEGAL:</strong> <span>Soporte Lógico / Programa de Computador</span></div>
+                <div class="legal-box-row"><strong>AUTOR Y TITULAR:</strong> <span>DANIEL VICK</span></div>
+                <div class="legal-box-row"><strong>VERSIÓN DEL SOFTWARE:</strong> <span>2.5.0 (Release Oficial de Producción)</span></div>
+                <div class="legal-box-row"><strong>FECHA DE DOCUMENTACIÓN:</strong> <span>Noviembre de 2026</span></div>
+                <div class="legal-box-row"><strong>MARCO REGULATORIO:</strong> <span>Ley 23 de 1982 &amp; Decisión Andina 351</span></div>
+            </div>
+        </div>
+
+        <div class="legal-footer">
+            EXPEDIENTE OFICIAL DE REGISTRO REGISTRAL (DNDA)<br>
+            MANIZALES, CALDAS, COLOMBIA
+        </div>
+    </div>
+
+    <h1>REGISTRO DE PROPIEDAD INTELECTUAL Y ESPECIFICACIÓN DE INGENIERÍA DE SOFTWARE</h1>
+<h2>MANUAL TÉCNICO Y ARQUITECTURA DEL SISTEMA — AUTOVALUA PRO</h2>
+<hr>
+<p><strong>INFORMACIÓN FORMAL DEL REGISTRO</strong></p>
+<ul>
+<li><strong>Nombre Comercial del Software:</strong> AutoValua Pro — Sistema Actuarial, Económico y Administrativo de Devaluación Vehicular (AutoValua Pro Valuation Suite)</li>
+<li><strong>Autor y Creador de la Obra:</strong> Daniel Vick</li>
+<li><strong>Versión del Software:</strong> 2.5.0 (Release Oficial de Producción)</li>
+<li><strong>Clasificación del Software:</strong> Aplicación Web de Simulación Financiera, Peritaje de Activos Móviles y Modelado Matemático</li>
+<li><strong>Fecha de Documentación:</strong> Noviembre de 2026</li>
+<li><strong>Licencia y Régimen Legal:</strong> Derechos Reservados del Autor / Registro de Soporte Lógico DNDA (Ley 23 de 1982, Decisión Andina 351 de 1993 y Decreto 1360 de 1989)</li>
+<li><strong>Marco Normativo y Regulatorio:</strong> Normas Internacionales de Información Financiera (NIIF / NIC 16), Estatuto Tributario Colombiano (Art. 137 E.T.), Guía Oficial de Valores Fasecolda y Resoluciones MinTransporte / Superintendencia de Industria y Comercio (SIC).</li>
+</ul>
+<hr>
+<h2>1. INTRODUCCIÓN Y FICHA TÉCNICA INSTITUCIONAL</h2>
+<p>El presente <strong>Manual Técnico</strong> expone la arquitectura de software, los modelos matemáticos continuos y discretos, los algoritmos actuariales y los patrones de diseño implementados en la plataforma <strong>AutoValua Pro</strong>. El sistema ha sido concebido para operar íntegramente en el cliente (<em>Client-Side High-Performance Single Page Application</em>), ofreciendo cálculo estocástico y determinístico, proyecciones multivariables a 20 años y renderizado gráfico interactivo sub-milisegundo sin requerir procesamiento en servidores externos, salvaguardando la privacidad estricta de los datos financieros del usuario.</p>
+<h3>1.1 Ficha de Componentes y Stack Tecnológico</h3>
+<table><thead><tr><th>Capa / Módulo</th><th>Tecnología / Librería</th><th>Versión</th><th>Rol e Integración en la Arquitectura</th></tr></thead><tbody><tr><td><strong>Framework Base</strong></td><td>React 19 / TypeScript</td><td>19.2.8 / 6.0.2</td><td>Arquitectura de componentes funcionales y tipado estricto en tiempo de compilación.</td></tr><tr><td><strong>Empaquetador y Build</strong></td><td>Vite</td><td>8.3.0</td><td>Servidor de desarrollo HMR ultrarrápido y compilador de producción optimizado con Rolldown.</td></tr><tr><td><strong>Motor Matemático Actuarial</strong></td><td>TypeScript Nativo (<code>src/lib/depreciationEngine.ts</code>)</td><td>Nativo</td><td>Cálculo de decaimiento continuo ($e^{-\lambda t}$), compuesto, línea recta NIC 16, DDB, factores multivariables y Terborgh.</td></tr><tr><td><strong>Motor de Recomendación por Presupuesto</strong></td><td>TypeScript Nativo (<code>src/lib/recommendationEngine.ts</code>)</td><td>Nativo</td><td>Algoritmo de ponderación comercial, búsqueda de rango presupuestario, filtrado multidimensional y cálculo de diferenciales.</td></tr><tr><td><strong>Base de Datos Oficial</strong></td><td>TypeScript Nativo (<code>src/data/sicFasecoldaData.ts</code>)</td><td>Nativo</td><td>Baremo actuarial de 51 vehículos con tablas de retención a 10 años, puntuaciones de liquidez y confiabilidad mecánica.</td></tr><tr><td><strong>Motor de Gráficos Financieros</strong></td><td>Chart.js / react-chartjs-2</td><td>4.5.1 / 5.3.1</td><td>Visualización de Curvas de Decaimiento, Curvas de Terborgh y Comparación Multi-Unidad con interpolación cúbica <code>monotone</code>.</td></tr><tr><td><strong>Iconografía Técnica</strong></td><td>Lucide React</td><td>1.51.0</td><td>Iconografía vectorial SVG técnica optimizada para interfaces de alta densidad.</td></tr><tr><td><strong>Estilos y Tokens de Diseño</strong></td><td>Tailwind CSS / PostCSS</td><td>4.3.3</td><td>Sistema de diseño de ingeniería modular con paleta oscura Fintech (<code>#090D16</code>), contraste WCAG AA/AAA y tokens de micro-animación.</td></tr></tbody></table>
+<hr>
+<h2>2. ARQUITECTURA DEL SISTEMA Y FLUJO DE DATOS</h2>
+<p>El sistema implementa una <strong>Arquitectura en Capas Desacoplada</strong> (<em>Layered Decoupled Architecture</em>) que aísla de manera estricta los motores matemáticos puros respecto a los componentes visuales de React.</p>
+<div class="mermaid">
+flowchart TD
+    subgraph Capa_UI [Capa de Interfaz de Usuario y Controladores]
+        A1[Header: Selección Divisa, Exportación CSV, Dictamen PDF]
+        A2[Asesor por Presupuesto: BudgetRecommender]
+        A3[Valuador Actuarial: SingleVehicleCalculator]
+        A4[Comparador Multi-Vehículo: VehicleComparison]
+        A5[Explorador Tablas Oficiales: SicFasecoldaExplorer]
+    end
+
+    subgraph Capa_Recomendacion [Motor de Recomendación Inteligente]
+        R1[Normalizador de Presupuesto COP / USD]
+        R2[Filtro de Rango con Tolerancia Dinámica]
+        R3[Puntuador Compuesto: Liquidez, Retención, Confiabilidad]
+        R4[Generador de Justificación Técnica y Alternativas]
+    end
+
+    subgraph Capa_Actuarial [Motor Actuarial de Devaluación]
+        D1[Desglose de Desgaste Multivariable: Km, Manto, Uso, Siniestros]
+        D2[Resolutor de Modelo: Continuo, Discreto, Fasecolda, NIC 16, DDB]
+        D3[Calculadora de Proyección Anual: Nominal, Deflactado, Costo/km]
+        D4[Optimizador de Terborgh: Costo Medio Anual Mínimo AAC]
+    end
+
+    subgraph Capa_Datos [Base de Datos Oficial SIC / Fasecolda]
+        DB1[Catálogo de 51 Vehículos Calibrados]
+        DB2[Curvas Históricas de Retención Años 1 a 10]
+        DB3[Métricas de Liquidez, Ranking Comercial y Confiabilidad]
+        DB4[Estándares Contables y Tributarios: Art. 137 E.T.]
+    end
+
+    subgraph Capa_Reportes [Generación de Dictámenes y Exportación]
+        E1[Modal de Dictamen Pericial Imprimible]
+        E2[Exportador CSV Sanitizado RFC 4180]
+        E3[Gráficos Interactivos Chart.js con Render Monótono]
+    end
+
+    A2 --> R1
+    R1 --> R2
+    R2 --> DB1
+    R2 --> R3
+    R3 --> D2
+    R3 --> R4
+    R4 --> A2
+
+    A3 --> D1
+    D1 --> D2
+    DB1 -.-> D2
+    D2 --> D3
+    D3 --> D4
+    D4 --> A3
+
+    A4 --> D2
+    A5 --> DB1
+
+    A3 --> E1 & E2 & E3
+    A4 --> E3
+</div>
+<hr>
+<h2>3. FORMULACIÓN MATEMÁTICA DE LOS MOTORES NUMÉRICOS</h2>
+<h3>3.1 Ley de Decaimiento Continuo Exponencial</h3>
+<p>El modelo físico-económico asume que la depreciación de un vehículo opera como un proceso de decaimiento radiactivo continuo, acelerado por el shock inicial de rodamiento (pérdida de valor al salir de vitrina e inscribirse en el registro público automotor):</p>
+<p>$$V(t) = V_0 \cdot (1 - d_1) \cdot e^{-\lambda \cdot (t - 1)} \quad \text{para } t \ge 1$$</p>
+<p>Donde:</p>
+<ul>
+<li>$V_0$: Precio de adquisición inicial a 0 km.</li>
+<li>$d_1$: Tasa porcentual de devaluación en el primer año (shock de concesionario, típicamente $12\% \le d_1 \le 25\%$).</li>
+<li>$\lambda$: Tasa instantánea continua de decaimiento, deducida a partir de la tasa anual esperada post-año 1 ($d$):</li>
+</ul>
+<p>$$\lambda = -\ln(1 - d)$$</p>
+<ul>
+<li>Para $t = 0$ (vehículo 0 km): $V(0) = V_0$.</li>
+</ul>
+<h3>3.2 Decaimiento Discreto Compuesto Anual</h3>
+<p>Modela la amortización mercantil año a año mediante interés compuesto inverso:</p>
+<p>$$V(t) = V_0 \cdot (1 - d_1) \cdot (1 - d)^{t - 1} \quad \text{para } t \ge 1$$</p>
+<h3>3.3 Modelo Contable NIIF NIC 16 (Línea Recta)</h3>
+<p>Bajo estándares internacionales de contabilidad para propiedades, planta y equipo (NIC 16), la amortización se calcula sobre el costo atribuible menos el valor residual de salvamento ($V_{salvamento} = V_0 \cdot S$):</p>
+<p>$$\text{Cuota Anual} = \frac{V_0 - V_{salvamento}}{n_{util}}$$</p>
+<p>$$V_{libros}(t) = \max\left(V_{salvamento}, \, V_0 - t \cdot \text{Cuota Anual}\right)$$</p>
+<p>Con $n_{util} = 10$ años (vida económica útil estándar) o 5 años para efectos fiscales según el Artículo 137 del Estatuto Tributario Colombiano.</p>
+<h3>3.4 Modelo de Saldo Decreciente Doble (DDB)</h3>
+<p>Aplica una depreciación acelerada duplicando la tasa de línea recta sobre el saldo neto no depreciado:</p>
+<p>$$\text{Tasa}_{DDB} = \frac{2}{n_{util}} = \frac{2}{10} = 20\% \text{ anual}$$</p>
+<p>$$V(t) = \max\left(V_{salvamento}, \, V(t-1) \cdot (1 - \text{Tasa}_{DDB})\right)$$</p>
+<h3>3.5 Tablas Oficiales de Referencia Fasecolda / SIC</h3>
+<p>Si el usuario selecciona el modelo Fasecolda y el automotor se encuentra indexado en el baremo oficial, el valor teórico en el año $t$ ($1 \le t \le 10$) se extrae de la serie histórica ponderada:</p>
+<p>$$V(t) = V_0 \cdot \left(\frac{\text{RetenciónPct}[t-1]}{100}\right)$$</p>
+<p>Para horizontes $t > 10$ años, se proyecta el decaimiento compuesto a partir del valor del año 10 empleando la tasa media típica declarada en el baremo.</p>
+<h3>3.6 Multiplicadores de Desgaste Multivariables y Aislamiento Contable</h3>
+<p>Para reflejar el estado físico y operativo real, el motor calcula un multiplicador compuesto:</p>
+<p>$$M = F_{km} \times F_{manto} \times F_{uso} \times F_{siniestro} \times F_{combustible}$$</p>
+<p>1. <strong>Factor de Kilometraje ($F_{km}$):</strong></p>
+<p>   Referencia estándar: $Km_{std} = 15.000$ km/año.</p>
+<p>   Penalización progresiva de $-1.2\%$ de valor por cada 1.500 km sobre el estándar, o bonificación hasta $+8\%$ para vehículos conservados en garaje:</p>
+<p>   $$F_{km} = \text{clamp}\left(1.0 - \left(\frac{Km_{anual} - 15000}{15000}\right) \cdot 0.12, \quad [0.72, \, 1.08]\right)$$</p>
+<p>2. <strong>Factor de Mantenimiento ($F_{manto}$):</strong></p>
+<p>   Excelente $= 1.04$, Bueno $= 1.00$, Regular $= 0.92$, Deficiente $= 0.82$.</p>
+<p>3. <strong>Factor de Destino de Operación ($F_{uso}$):</strong></p>
+<p>   Particular $= 1.00$, Corporativo $= 0.94$, Carga Liviana $= 0.86$, Plataforma/Taxi $= 0.75$.</p>
+<p>4. <strong>Factor de Historial de Siniestralidad ($F_{siniestro}$):</strong></p>
+<p>   Sin Siniestros $= 1.00$, Estético Menor $= 0.94$, Siniestro Medio $= 0.83$, Daño Estructural Severo $= 0.65$.</p>
+<p>5. <strong>Factor de Tecnología de Motorización ($F_{combustible}$):</strong></p>
+<p>   Gasolina $= 1.00$, Diésel $= 1.02$, Híbrido $= 1.03$, 100% Eléctrico $= 0.96$ (por obsolescencia y degradación de celdas electroquímicas).</p>
+<p><strong>Regla de Integridad de Modelos Contables:</strong></p>
+<p>Los modelos determinísticos contables (Línea Recta NIC 16 y DDB) no son afectados por el multiplicador $M$, en estricto acatamiento de las normas contables. Para los modelos económicos y de mercado, el impacto se modula progresivamente según la edad del vehículo:</p>
+<p>$$W(t) = 1.0 + (M - 1.0) \cdot \min(1.0, \, 0.4 + 0.06 t)$$</p>
+<p>$$V_{ajustado}(t) = \max\left(V_{salvamento}, \, V_{teorico}(t) \cdot W(t)\right)$$</p>
+<h3>3.7 Modelo de Terborgh y Costo Total de Propiedad (TCO)</h3>
+<p>Para evitar el error común de duplicar la depreciación dentro de los costos de tenencia, el sistema calcula el TCO acumulado estrictamente como:</p>
+<p>$$\text{Pérdida de Capital}(t) = V_0 - V(t)$$</p>
+<p>$$OpEx(t) = \text{Mantenimiento}(t) + \text{Combustible}(t) + \text{Seguro}(t) + \text{Impuestos}(t)$$</p>
+<p>$$TCO(t) = \text{Pérdida de Capital}(t) + \sum_{i=1}^t OpEx(i)$$</p>
+<p>Donde el mantenimiento preventivo y correctivo crece de forma no lineal por envejecimiento mecánico con una tasa de inflación técnica $r_{manto}$ (típicamente $10\%$ a $16\%$ anual):</p>
+<p>$$\text{Mantenimiento}(t) = \text{Manto}_{base} \cdot (1 + r_{manto})^{t - 1}$$</p>
+<p>El <strong>Costo Medio Anual Acumulado (Average Annual Cost - AAC)</strong> según el teorema de sustitución de activos de George Terborgh se formula como:</p>
+<p>$$AAC(t) = \frac{TCO(t)}{t}$$</p>
+<p>El <strong>Año Óptimo de Reemplazo</strong> ($t^*$) es el mínimo global de dicha curva:</p>
+<p>$$t^* = \arg\min_{t \in [1, N]} AAC(t)$$</p>
+<p>Representa el año exacto en que la suma de la depreciación marginal decreciente y los costos de taller crecientes alcanza su punto más bajo, aconsejando la renovación del activo antes de incurrir en pérdidas financieras.</p>
+<h3>3.8 Algoritmo de Recomendación por Presupuesto</h3>
+<p>Dado un presupuesto $B$ y una tolerancia $\tau$ (por defecto $\tau = 15\%$), se define el rango $[B(1-\tau), \, B(1+\tau)]$. Para cada vehículo candidato de la base Fasecolda, se calcula una puntuación compuesta normalizada ($0 \le C \le 100$):</p>
+<p>$$C = w_{com} \cdot S_{com} + w_{ret} \cdot S_{ret} + w_{rel} \cdot S_{rel} + w_{prox} \cdot S_{prox}$$</p>
+<p>Donde:</p>
+<ul>
+<li>$S_{com}$: Puntuación de liquidez de mercado y rotación (pondera categoría de liquidez <code>Alta</code>/<code>Media</code>/<code>Baja</code>, ranking comercial y días promedio en vitrina).</li>
+<li>$S_{ret}$: Puntuación de retención de capital basada en la tasa anual $d$ y la retención al 5to año.</li>
+<li>$S_{rel}$: Puntuación de confiabilidad mecánica del modelo ($1 \text{ a } 10$).</li>
+<li>$S_{prox}$: Proximidad de precio respecto al presupuesto del usuario: $S_{prox} = \max\left(0, 100 - 3 \cdot \left|\frac{V_{ref} - B}{B}\right| \cdot 100\right)$.</li>
+</ul>
+<hr>
+<h2>4. SEGURIDAD Y VALIDACIÓN DE DATOS</h2>
+<p>1. <strong>Protección Anti-Formula Injection (CSV Injection):</strong></p>
+<p>   En la generación de archivos descargables para hojas de cálculo, cualquier celda que comience por caracteres de ejecución de macros (<code>=</code>, <code>+</code>, <code>-</code>, <code>@</code>) es sanitizada anteponiendo un apóstrofe (<code>&#039;</code>), previniendo ejecución no autorizada en Microsoft Excel o Google Sheets.</p>
+<p>2. <strong>Prevención de <code>NaN</code> en Entradas Numéricas:</strong></p>
+<p>   Los campos numéricos implementan validación tipada que previene estados corruptos ante campos vacíos o cadenas no numéricas, restaurando un valor por defecto seguro.</p>
+<p>3. <strong>Generación Criptográfica de Identificadores:</strong></p>
+<p>   La creación de identificadores únicos para vehículos en el comparador utiliza la API de la plataforma <code>crypto.randomUUID()</code>.</p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+            }
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+    </script>
+</body>
+</html>

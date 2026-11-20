@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>DOCUMENTO TÉCNICO N° 3: DIAGRAMA DE CLASES Y MODELO DE COMPONENTES</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 20mm 15mm 20mm 15mm;
+            @bottom-center {
+                content: counter(page);
+                font-family: "Times New Roman", Times, serif;
+                font-size: 9pt;
+            }
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 11pt;
+            line-height: 1.45;
+            color: #111111;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* ESTILOS DE PORTADA FORMAL LEGAL */
+        .legal-cover {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            page-break-after: always;
+            min-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .legal-institution {
+            font-size: 14pt;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .legal-subinstitution {
+            font-size: 10pt;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            color: #222222;
+        }
+        .legal-title {
+            font-size: 17pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            line-height: 1.25;
+            border-top: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            padding: 14px 0;
+        }
+        .legal-subtitle {
+            font-size: 11.5pt;
+            font-weight: normal;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        .legal-box {
+            margin: 30px auto;
+            width: 90%;
+            border: 1px solid #000000;
+            padding: 18px 22px;
+            text-align: left;
+            font-size: 10pt;
+            line-height: 1.75;
+            background-color: #ffffff;
+        }
+        .legal-box-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .legal-footer {
+            margin-top: 50px;
+            font-size: 9.5pt;
+            text-transform: uppercase;
+        }
+
+        /* ENCABEZADOS Y JERARQUÍA */
+        h1 {
+            font-size: 14.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid #000000;
+            padding-bottom: 4px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            page-break-before: always;
+        }
+        h2 {
+            font-size: 12.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1px solid #444444;
+            padding-bottom: 3px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+        h3 {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+        h4 {
+            font-size: 10pt;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            page-break-after: avoid;
+        }
+        p {
+            margin-bottom: 10px;
+            text-indent: 15px;
+            text-align: justify;
+        }
+        ul {
+            margin-top: 5px;
+            margin-bottom: 12px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* TABLAS FORMALES LEGALES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 9pt;
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #000000;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 8.5pt;
+        }
+
+        /* CÓDIGO Y BLOQUES */
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #444444;
+            padding: 10px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 8.5pt;
+            line-height: 1.25;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 12px 0;
+            page-break-inside: avoid;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 9pt;
+            background: #f0f0f0;
+            padding: 1px 4px;
+            border: 1px solid #cccccc;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #000000;
+            margin: 20px 0;
+        }
+        .mermaid {
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        .mermaid svg {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="legal-cover">
+        <div>
+            <div class="legal-institution">REPÚBLICA DE COLOMBIA</div>
+            <div class="legal-subinstitution">DIRECCIÓN NACIONAL DE DERECHO DE AUTOR — REGISTRO DE SOPORTE LÓGICO</div>
+            <div class="legal-title">DOCUMENTO TÉCNICO N° 3: DIAGRAMA DE CLASES Y MODELO DE COMPONENTES</div>
+            <div class="legal-subtitle">Registro de Propiedad Intelectual — AutoValua Pro: Sistema Actuarial, Económico y Administrativo de Devaluación Vehicular</div>
+            
+            <div class="legal-box">
+                <div class="legal-box-row"><strong>DENOMINACIÓN DE LA OBRA:</strong> <span>AUTOVALUA PRO (VEHICLE VALUATION &amp; DEPRECIATION SUITE)</span></div>
+                <div class="legal-box-row"><strong>CLASIFICACIÓN LEGAL:</strong> <span>Soporte Lógico / Programa de Computador</span></div>
+                <div class="legal-box-row"><strong>AUTOR Y TITULAR:</strong> <span>DANIEL VICK</span></div>
+                <div class="legal-box-row"><strong>VERSIÓN DEL SOFTWARE:</strong> <span>2.5.0 (Release Oficial de Producción)</span></div>
+                <div class="legal-box-row"><strong>FECHA DE DOCUMENTACIÓN:</strong> <span>Noviembre de 2026</span></div>
+                <div class="legal-box-row"><strong>MARCO REGULATORIO:</strong> <span>Ley 23 de 1982 &amp; Decisión Andina 351</span></div>
+            </div>
+        </div>
+
+        <div class="legal-footer">
+            EXPEDIENTE OFICIAL DE REGISTRO REGISTRAL (DNDA)<br>
+            MANIZALES, CALDAS, COLOMBIA
+        </div>
+    </div>
+
+    <h1>REGISTRO DE PROPIEDAD INTELECTUAL Y DIAGRAMA DE ARQUITECTURA</h1>
+<h2>DIAGRAMA DE CLASES Y MODELO DE COMPONENTES — AUTOVALUA PRO</h2>
+<hr>
+<p><strong>INFORMACIÓN FORMAL DEL REGISTRO</strong></p>
+<ul>
+<li><strong>Nombre Comercial del Software:</strong> AutoValua Pro — Sistema Actuarial, Económico y Administrativo de Devaluación Vehicular (AutoValua Pro Valuation Suite)</li>
+<li><strong>Autor y Creador de la Obra:</strong> Daniel Vick</li>
+<li><strong>Versión del Software:</strong> 2.5.0 (Release Oficial de Producción)</li>
+<li><strong>Clasificación del Software:</strong> Soporte Lógico / Programa de Computador / Simulación Financiera y Actuarial</li>
+<li><strong>Fecha de Documentación:</strong> Noviembre de 2026</li>
+<li><strong>Licencia y Régimen Legal:</strong> Derechos Reservados del Autor / Registro de Soporte Lógico DNDA (Ley 23 de 1982, Decisión Andina 351 de 1993 y Decreto 1360 de 1989)</li>
+<li><strong>Marco Normativo y Regulatorio:</strong> Normas Internacionales de Información Financiera (NIIF / NIC 16), Estatuto Tributario Colombiano (Art. 137 E.T.), Guía Oficial de Valores Fasecolda y Resoluciones MinTransporte / Superintendencia de Industria y Comercio (SIC).</li>
+</ul>
+<hr>
+<h2>1. INTRODUCCIÓN Y DIAGRAMA UML DE CLASES</h2>
+<p>El presente documento detalla la estructura formal de clases, interfaces tipadas en TypeScript, contratos de datos y patrones de diseño de software que sustentan la plataforma <strong>AutoValua Pro</strong>. La arquitectura asegura una separación estricta entre las entidades de dominio vehicular (<code>src/types/vehicle.ts</code>), los motores de cálculo numérico puro (<code>src/lib/depreciationEngine.ts</code> y <code>src/lib/recommendationEngine.ts</code>), el repositorio oficial de datos (<code>src/data/sicFasecoldaData.ts</code>) y la jerarquía de componentes visuales en React 19 (<code>src/components/</code>).</p>
+<h3>1.1 Diagrama de Clases UML del Sistema</h3>
+<div class="mermaid">
+classDiagram
+    direction TB
+
+    class VehicleParameters {
+        +String id
+        +String name
+        +String brand
+        +String line
+        +Number modelYear
+        +Number initialPrice
+        +Number currentAgeYears
+        +String fasecoldaCode
+        +Number firstYearDropPct
+        +Number annualDepreciationRatePct
+        +Number lambdaRate
+        +Number salvageValuePct
+        +Number annualMileageKm
+        +MaintenanceCondition maintenance
+        +UsageType usageType
+        +AccidentHistory accidentHistory
+        +FuelType fuelType
+        +Number annualInsuranceCost
+        +Number annualTaxCost
+        +Number annualMaintenanceBaseCost
+        +Number maintenanceInflationRatePct
+        +Number fuelCostPerKm
+        +Number expectedInflationPct
+        +Number corporateTaxShieldPct
+    }
+
+    class YearProjection {
+        +Number year
+        +Number nominalPrice
+        +Number realPriceDeflated
+        +Number accumulatedDepreciationVal
+        +Number accumulatedDepreciationPct
+        +Number annualDepreciationVal
+        +Number annualDepreciationPct
+        +Number depreciationPerKm
+        +Number monthlyDepreciationVal
+        +Number annualMaintenanceCost
+        +Number annualOpEx
+        +Number annualOperatingCost
+        +Number accumulatedOpEx
+        +Number accumulatedTCO
+        +Number averageAnnualCost
+        +Number accountingBookValue
+        +Number taxShieldSavings
+        +Number wearFactor
+        +Number accumulatedMileage
+    }
+
+    class VehicleAnalysisResult {
+        +VehicleParameters vehicle
+        +Number currentEstimatedValue
+        +Number targetYearEstimatedValue
+        +Array~YearProjection~ projections
+        +Number optimalReplacementYear
+        +Number totalDepreciationAtTargetYear
+        +Number totalTCOAtTargetYear
+        +Number effectiveAnnualDecayRatePct
+        +Number salvageValue
+        +Number combinedWearMultiplier
+        +Boolean isFasecoldaMatched
+        +Object breakdown
+    }
+
+    class OfficialSicFasecoldaVehicle {
+        +String code
+        +String brand
+        +String line
+        +String category
+        +FuelType fuelType
+        +Number referencePriceNew
+        +Array~Number~ historicalRetentionPct
+        +Number typicalAnnualDecayPct
+        +String marketLiquidityScore
+        +Number reliabilityScore
+        +Number commercialRank
+        +Number resaleDaysAverage
+        +String whyRecommended
+        +Array~String~ pros
+        +String targetAudience
+    }
+
+    class RecommendedVehicleItem {
+        +OfficialSicFasecoldaVehicle officialVehicle
+        +VehicleParameters vehicleParams
+        +VehicleAnalysisResult analysis
+        +Number priceDiff
+        +Number priceDiffPct
+        +Number commercialScore
+        +Number retentionScore
+        +Number compositeScore
+        +String badgeTag
+        +Number segmentAvgDecayPct
+        +Number annualSavingsVsSegment
+        +String whyRecommendedSummary
+        +Object detailedWhy
+    }
+
+    class BudgetRecommendationResult {
+        +Number budgetInCOP
+        +String budgetFormatted
+        +String currency
+        +Number rangeMin
+        +Number rangeMax
+        +Number tolerancePct
+        +Number totalMatches
+        +RecommendedVehicleItem primaryRecommendation
+        +Array~RecommendedVehicleItem~ alternativeRecommendations
+        +Array~RecommendedVehicleItem~ allCandidates
+    }
+
+    class DepreciationEngine {
+        +calculateWearBreakdown(v) Object
+        +findFasecoldaVehicle(v) OfficialSicFasecoldaVehicle
+        +calculateYearValue(v, t, model, wearMultiplier) Object
+        +analyzeVehicleDepreciation(vehicle, maxYears, model) VehicleAnalysisResult
+        +formatCurrency(amount, currency) String
+        +formatNumber(value) String
+    }
+
+    class RecommendationEngine {
+        +convertToCOP(amount, currency) Number
+        +convertFromCOP(amountInCOP, currency) Number
+        +buildOperationalParameters(price, fuel, category) Object
+        +convertOfficialToVehicleParameters(official, customPrice) VehicleParameters
+        +getBudgetRecommendations(params) BudgetRecommendationResult
+    }
+
+    class App {
+        -String activeTab
+        -String currency
+        -ModelType selectedModel
+        -Number projectionYears
+        -VehicleParameters activeVehicle
+        -Number recommenderBudget
+        -Array~VehicleParameters~ comparisonVehicles
+        -Boolean showPrintReport
+        -String toastMessage
+        +handleSelectFromDatabase(v) void
+        +handleAddVehicleToComparison(v) void
+        +handleOpenRecommender(budget) void
+        +handleExportCSV() void
+    }
+
+    class BudgetRecommender {
+        +Number budgetValue
+        +Number tolerancePct
+        +String selectedCategory
+        +String selectedFuel
+        +String priority
+        +Number selectedTargetYear
+        +onSelectVehicleForValuation(v) void
+        +onAddVehicleToComparison(v) void
+    }
+
+    class SingleVehicleCalculator {
+        -String activeView
+        -Boolean showFormulaModal
+        +updateNumericField(field, rawValue, fallback) void
+        +handlePresetSelect(code) void
+        +onUpdateVehicle(v) void
+        +onAddVehicleToComparison(v) void
+        +onOpenRecommender(budget) void
+    }
+
+    class VehicleComparison {
+        +Array~VehicleParameters~ vehicles
+        +Number comparisonHorizonYears
+        +String metricMode
+        +onRemoveVehicle(id) void
+        +onAddPresetVehicle(code) void
+    }
+
+    class ValuationReportModal {
+        +VehicleParameters vehicle
+        +VehicleAnalysisResult analysis
+        +String currency
+        +onClose() void
+    }
+
+    %% Relaciones
+    VehicleAnalysisResult *-- VehicleParameters
+    VehicleAnalysisResult *-- YearProjection
+    RecommendedVehicleItem *-- OfficialSicFasecoldaVehicle
+    RecommendedVehicleItem *-- VehicleParameters
+    RecommendedVehicleItem *-- VehicleAnalysisResult
+    BudgetRecommendationResult *-- RecommendedVehicleItem
+
+    DepreciationEngine ..> VehicleParameters : procesa
+    DepreciationEngine ..> VehicleAnalysisResult : genera
+    RecommendationEngine ..> OfficialSicFasecoldaVehicle : lee
+    RecommendationEngine ..> BudgetRecommendationResult : genera
+    RecommendationEngine ..> DepreciationEngine : utiliza
+
+    App *-- BudgetRecommender
+    App *-- SingleVehicleCalculator
+    App *-- VehicleComparison
+    App *-- ValuationReportModal
+    BudgetRecommender ..> RecommendationEngine : consulta
+    SingleVehicleCalculator ..> DepreciationEngine : consulta
+    VehicleComparison ..> DepreciationEngine : consulta
+</div>
+<hr>
+<h2>2. DICCIONARIO DE ESTRUCTURAS, INTERFACES Y CONTRATOS DE DATOS</h2>
+<h3>2.1 Entidades del Dominio Vehicular (<code>src/types/vehicle.ts</code>)</h3>
+<h4><code>VehicleParameters</code></h4>
+<p>Representa el conjunto exhaustivo de variables de entrada que definen la condición técnica, económica, de desgaste y administrativa de un vehículo.</p>
+<ul>
+<li><code>id</code>: Identificador alfanumérico único generado criptográficamente.</li>
+<li><code>name</code>, <code>brand</code>, <code>line</code>: Metadatos comerciales de marca y línea.</li>
+<li><code>modelYear</code>: Año modelo de fabricación del vehículo.</li>
+<li><code>initialPrice</code>: Valor de compra o factura inicial ($V_0$).</li>
+<li><code>currentAgeYears</code>: Edad del automotor en años (0 para vehículos 0 km de vitrina).</li>
+<li><code>fasecoldaCode</code>: Código oficial homologado en el baremo Fasecolda / SIC.</li>
+<li><code>firstYearDropPct</code>: Shock porcentual de devaluación al salir de vitrina ($d_1$).</li>
+<li><code>annualDepreciationRatePct</code>: Tasa anual de amortización técnica ($d$).</li>
+<li><code>salvageValuePct</code>: Valor de salvamento porcentual residual ($S$).</li>
+<li><code>annualMileageKm</code>: Recorrido anual proyectado en kilómetros.</li>
+<li><code>maintenance</code>: Condición de servicio (<code>excelente</code>, <code>bueno</code>, <code>regular</code>, <code>deficiente</code>).</li>
+<li><code>usageType</code>: Destino operativo (<code>particular</code>, <code>corporativo</code>, <code>plataforma_taxi</code>, <code>carga_comercial</code>).</li>
+<li><code>accidentHistory</code>: Historial de siniestralidad (<code>sin_siniestros</code>, <code>estetico_menor</code>, <code>medio_reparado</code>, <code>estructural_severo</code>).</li>
+<li><code>fuelType</code>: Tecnología de propulsión (<code>gasolina</code>, <code>diesel</code>, <code>hibrido</code>, <code>electrico</code>).</li>
+<li><code>annualInsuranceCost</code>: Costo anual de la póliza de seguro todo riesgo.</li>
+<li><code>annualTaxCost</code>: Impuesto vehicular anual ante autoridades tributarias.</li>
+<li><code>annualMaintenanceBaseCost</code>: Mantenimiento preventivo base anual.</li>
+<li><code>maintenanceInflationRatePct</code>: Tasa anual de sobrecosto por envejecimiento mecánico.</li>
+<li><code>fuelCostPerKm</code>: Gasto promedio de combustible o recarga por kilómetro recorrido.</li>
+<li><code>expectedInflationPct</code>: Tasa anual proyectada de inflación para cálculo del valor deflactado.</li>
+<li><code>corporateTaxShieldPct</code>: Tasa del impuesto sobre la renta corporativo deducible (escudo fiscal).</li>
+</ul>
+<h4><code>YearProjection</code></h4>
+<p>Contenedor con los resultados proyectados para un año específico $t \in [1, N]$.</p>
+<ul>
+<li><code>year</code>: Índice del año proyectado.</li>
+<li><code>nominalPrice</code>: Valor comercial de mercado estimado.</li>
+<li><code>realPriceDeflated</code>: Valor comercial expresado en moneda constante ajustada por inflación.</li>
+<li><code>accumulatedDepreciationVal</code>: Pérdida de capital acumulada en valor absoluto ($V_0 - V(t)$).</li>
+<li><code>accumulatedDepreciationPct</code>: Porcentaje acumulado de devaluación.</li>
+<li><code>annualDepreciationVal</code>: Pérdida marginal de capital en el período ($V(t-1) - V(t)$).</li>
+<li><code>annualDepreciationPct</code>: Tasa efectiva de depreciación del año.</li>
+<li><code>depreciationPerKm</code>: Pérdida de capital dividida por el kilometraje anual recorrido.</li>
+<li><code>monthlyDepreciationVal</code>: Gasto marginal mensual equivalente de devaluación.</li>
+<li><code>annualMaintenanceCost</code>: Costo preventivo del año $t$ indexado por envejecimiento.</li>
+<li><code>annualOpEx</code>: Gasto operativo puro anual (Mantenimiento + Combustible + Seguros + Impuestos).</li>
+<li><code>accumulatedOpEx</code>: Sumatoria acumulada de costos operativos hasta el año $t$.</li>
+<li><code>accumulatedTCO</code>: Costo Total de Propiedad acumulado sin doble conteo de depreciación.</li>
+<li><code>averageAnnualCost</code>: Costo Medio Anual Terborgh ($AAC(t) = \frac{TCO(t)}{t}$).</li>
+<li><code>accountingBookValue</code>: Valor contable neto en libros bajo la norma NIIF NIC 16.</li>
+<li><code>taxShieldSavings</code>: Ahorro fiscal por deducción contable del gasto de depreciación.</li>
+<li><code>wearFactor</code>: Multiplicador de desgaste dinámico calibrado por edad.</li>
+<li><code>accumulatedMileage</code>: Kilometraje total acumulado ($Km_{anual} \cdot t$).</li>
+</ul>
+<h4><code>OfficialSicFasecoldaVehicle</code></h4>
+<p>Estructura de registro de la base oficial de referencia Fasecolda / SIC.</p>
+<ul>
+<li><code>code</code>: Código alfanumérico institucional (ej. <code>FAS-TOY-COR-CRS</code>).</li>
+<li><code>category</code>: Segmento del vehículo (<code>Sedán</code>, <code>Hatchback</code>, <code>SUV Compacta</code>, <code>SUV Mediana</code>, <code>Camioneta Pick-Up</code>, <code>Utilitario</code>, <code>Premium</code>, <code>Eléctrico/Híbrido</code>).</li>
+<li><code>referencePriceNew</code>: Precio nuevo promedio de vitrina 2024-2026 en COP.</li>
+<li><code>historicalRetentionPct</code>: Vector de 10 posiciones con la retención histórica oficial del año 1 al año 10.</li>
+<li><code>typicalAnnualDecayPct</code>: Tasa de amortización anual promedio de la serie.</li>
+<li><code>marketLiquidityScore</code>: Nivel de liquidez en el mercado de usados (<code>Alta</code>, <code>Media</code>, <code>Baja</code>).</li>
+<li><code>reliabilityScore</code>: Puntuación de confiabilidad mecánica del automotor (escala 1 a 10).</li>
+<li><code>commercialRank</code>: Puesto relativo de rotación y ventas en Colombia (1 = líder nacional).</li>
+<li><code>resaleDaysAverage</code>: Tiempo promedio estimado en días para concretar la venta del vehículo.</li>
+<li><code>whyRecommended</code>: Fundamentación técnica y financiera de recomendación del vehículo.</li>
+<li><code>pros</code>: Vector de argumentos y ventajas competitivas del modelo.</li>
+<li><code>targetAudience</code>: Perfil sociodemográfico o corporativo idóneo para el modelo.</li>
+</ul>
+<hr>
+<h2>3. PATRONES DE DISEÑO IMPLEMENTADOS</h2>
+<p>1. <strong>Patrón Estrategia (Strategy Pattern):</strong></p>
+<p>   Implementado en <code>calculateYearValue</code> de <code>src/lib/depreciationEngine.ts</code>. Permite intercambiar en tiempo de ejecución cualquiera de los 5 algoritmos matemáticos de devaluación (<code>exponential_continuous</code>, <code>exponential_discrete</code>, <code>fasecolda_sic_table</code>, <code>accounting_straight</code>, <code>accounting_declining</code>) a través de una interfaz común sin alterar el flujo de proyecciones.</p>
+<p>2. <strong>Patrón Fachada (Facade Pattern):</strong></p>
+<p>   Las funciones de alto nivel <code>analyzeVehicleDepreciation</code> y <code>getBudgetRecommendations</code> operan como fachadas que abstraen la complejidad de cálculos de desgaste, desgloses, indexaciones de tablas Fasecolda, optimizaciones de Terborgh y sanitizaciones numéricas.</p>
+<p>3. <strong>Patrón Tubería y Filtros (Pipeline Architecture):</strong></p>
+<p>   El cálculo de las proyecciones anuales $1 \le t \le N$ procesa secuencialmente: Valor Teórico $\rightarrow$ Modulación de Desgaste por Edad $\rightarrow$ Deflactación por Inflación $\rightarrow$ Indexación de OpEx $\rightarrow$ Amortización Contable NIC 16 $\rightarrow$ Optimización Terborgh.</p>
+<p>4. <strong>Patrón Componentes Controlados (Controlled Components Pattern):</strong></p>
+<p>   En la capa React 19, todos los campos numéricos, sliders y selectores mantienen un flujo de datos unidireccional estricto, garantizando que el estado global sea siempre la única fuente de verdad (<em>Single Source of Truth</em>).</p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+            }
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+    </script>
+</body>
+</html>

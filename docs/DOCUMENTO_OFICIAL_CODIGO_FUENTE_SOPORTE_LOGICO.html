@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>DOCUMENTO TÉCNICO N° 4: EXTRACTO INDEXADO DE CÓDIGO FUENTE</title>
+    <!-- KaTeX CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"></script>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 20mm 15mm 20mm 15mm;
+            @bottom-center {
+                content: counter(page);
+                font-family: "Times New Roman", Times, serif;
+                font-size: 9pt;
+            }
+        }
+
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 11pt;
+            line-height: 1.45;
+            color: #111111;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* ESTILOS DE PORTADA FORMAL LEGAL */
+        .legal-cover {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+            page-break-after: always;
+            min-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .legal-institution {
+            font-size: 14pt;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .legal-subinstitution {
+            font-size: 10pt;
+            text-transform: uppercase;
+            margin-bottom: 35px;
+            color: #222222;
+        }
+        .legal-title {
+            font-size: 17pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            line-height: 1.25;
+            border-top: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            padding: 14px 0;
+        }
+        .legal-subtitle {
+            font-size: 11.5pt;
+            font-weight: normal;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+        .legal-box {
+            margin: 30px auto;
+            width: 90%;
+            border: 1px solid #000000;
+            padding: 18px 22px;
+            text-align: left;
+            font-size: 10pt;
+            line-height: 1.75;
+            background-color: #ffffff;
+        }
+        .legal-box-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        .legal-footer {
+            margin-top: 50px;
+            font-size: 9.5pt;
+            text-transform: uppercase;
+        }
+
+        /* ENCABEZADOS Y JERARQUÍA */
+        h1 {
+            font-size: 14.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1.5px solid #000000;
+            padding-bottom: 4px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            page-break-before: always;
+        }
+        h2 {
+            font-size: 12.5pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1px solid #444444;
+            padding-bottom: 3px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            page-break-after: avoid;
+        }
+        h3 {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            page-break-after: avoid;
+        }
+        h4 {
+            font-size: 10pt;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 4px;
+            page-break-after: avoid;
+        }
+        p {
+            margin-bottom: 10px;
+            text-indent: 15px;
+            text-align: justify;
+        }
+        ul {
+            margin-top: 5px;
+            margin-bottom: 12px;
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* TABLAS FORMALES LEGALES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 9pt;
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #000000;
+            padding: 6px 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 8.5pt;
+        }
+
+        /* CÓDIGO Y BLOQUES */
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #444444;
+            padding: 10px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 8.5pt;
+            line-height: 1.25;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 12px 0;
+            page-break-inside: avoid;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 9pt;
+            background: #f0f0f0;
+            padding: 1px 4px;
+            border: 1px solid #cccccc;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #000000;
+            margin: 20px 0;
+        }
+        .mermaid {
+            background: #ffffff;
+            border: 1px solid #000000;
+            padding: 12px;
+            margin: 15px 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        .mermaid svg {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="legal-cover">
+        <div>
+            <div class="legal-institution">REPÚBLICA DE COLOMBIA</div>
+            <div class="legal-subinstitution">DIRECCIÓN NACIONAL DE DERECHO DE AUTOR — REGISTRO DE SOPORTE LÓGICO</div>
+            <div class="legal-title">DOCUMENTO TÉCNICO N° 4: EXTRACTO INDEXADO DE CÓDIGO FUENTE</div>
+            <div class="legal-subtitle">Registro de Propiedad Intelectual (DNDA) — Soporte Lógico AutoValua Pro (5,504 Líneas)</div>
+            
+            <div class="legal-box">
+                <div class="legal-box-row"><strong>DENOMINACIÓN DE LA OBRA:</strong> <span>AUTOVALUA PRO (VEHICLE VALUATION &amp; DEPRECIATION SUITE)</span></div>
+                <div class="legal-box-row"><strong>CLASIFICACIÓN LEGAL:</strong> <span>Soporte Lógico / Programa de Computador</span></div>
+                <div class="legal-box-row"><strong>AUTOR Y TITULAR:</strong> <span>DANIEL VICK</span></div>
+                <div class="legal-box-row"><strong>VERSIÓN DEL SOFTWARE:</strong> <span>2.5.0 (Release Oficial de Producción)</span></div>
+                <div class="legal-box-row"><strong>FECHA DE DOCUMENTACIÓN:</strong> <span>Noviembre de 2026</span></div>
+                <div class="legal-box-row"><strong>MARCO REGULATORIO:</strong> <span>Ley 23 de 1982 &amp; Decisión Andina 351</span></div>
+            </div>
+        </div>
+
+        <div class="legal-footer">
+            EXPEDIENTE OFICIAL DE REGISTRO REGISTRAL (DNDA)<br>
+            MANIZALES, CALDAS, COLOMBIA
+        </div>
+    </div>
+
+    <h1>DOCUMENTO TÉCNICO N° 4: EXTRACTO INDEXADO DE CÓDIGO FUENTE</h1>
+<h1>MUESTREO REPRESENTATIVO DE CÓDIGO FUENTE PARA REGISTRO DE SOPORTE LÓGICO</h1>
+<p><strong>REPÚBLICA DE COLOMBIA — DIRECCIÓN NACIONAL DE DERECHO DE AUTOR (DNDA)</strong>  </p>
+<p><strong>SOLICITUD DE REGISTRO DE SOPORTE LÓGICO (PROGRAMA DE COMPUTADOR)</strong>  </p>
+<p><strong>DENOMINACIÓN DE LA OBRA:</strong> AUTOVALUA PRO — SISTEMA ACTUARIAL, ECONÓMICO Y ADMINISTRATIVO DE DEVALUACIÓN VEHICULAR  </p>
+<p><strong>FECHA DE DOCUMENTACIÓN:</strong> NOVIEMBRE DE 2026  </p>
+<p><strong>VERSIÓN DEL SOFTWARE:</strong> 2.5.0 (RELEASE OFICIAL DE PRODUCCIÓN)  </p>
+<p><strong>TITULARIDAD DE DERECHOS:</strong> DANIEL VICK  </p>
+<hr>
+<h2>1. PRESENTACIÓN FORMAL Y MARCO LEGAL DE PROTECCIÓN</h2>
+<p>El presente documento constituye el <strong>MUESTREO REGISTRAL INDEXADO, EXTRACTO REPRESENTATIVO Y PROTOCOLO DE INTEGRIDAD DE CÓDIGO FUENTE</strong> del programa de computador denominado <strong>&quot;AutoValua Pro — Sistema Actuarial, Económico y Administrativo de Devaluación Vehicular&quot;</strong>, elaborado en estricto cumplimiento de la <strong>Ley 23 de 1982</strong>, la <strong>Decisión Andina 351 de 1993</strong>, el <strong>Decreto 1360 de 1989</strong> y los lineamientos de depósito de la <strong>Dirección Nacional de Derecho de Autor (DNDA)</strong> de la República de Colombia.</p>
+<p>Para satisfacer la exigencia legal de depósito de soporte lógico protegiendo el secreto industrial y evitando la vulneración de propiedad intelectual por terceros, el expediente se fundamenta en cuatro garantías:</p>
+<p>1. <strong>Mapa de Módulos e Indexación Criptográfica (SHA-256):</strong> Identificación exhaustiva de los 22 archivos fuente que conforman el núcleo de la aplicación, totalizando <strong>5,504 líneas de código</strong>, cada uno avalado por su firma digital criptográfica inalterable calculada mediante algoritmo SHA-256 sobre el archivo íntegro.</p>
+<p>2. <strong>Muestreo Legal Representativo de Inicio y Cierre:</strong> Depósito de las primeras 30 a 45 líneas y últimas 30 a 45 líneas de los módulos esenciales, certificando la estructura sintáctica, contratos de tipos y patrones de diseño.</p>
+<p>3. <strong>Reserva Legal de Código Intermedio:</strong> Protección y secreto comercial sobre las rutinas numéricas intermedias de iteración de Terborgh, matrices de decaimiento continuo y algoritmos de interpolación.</p>
+<p>4. <strong>Validación de Integridad y Sanitización:</strong> Aplicación de buenas prácticas de ingeniería de software, tipado estricto en TypeScript y protección contra inyecciones de código y fórmulas en exportaciones.</p>
+<hr>
+<h2>2. ÍNDICE GENERAL Y MAPA DE MÓDULOS DEL CÓDIGO FUENTE (22 ARCHIVOS / 5,504 LÍNEAS)</h2>
+<table><thead><tr><th>Archivo / Módulo Fuente</th><th>Rol y Descripción Funcional</th><th>Lenguaje / Formato</th><th>Total Líneas</th><th>Muestreo Depositado</th><th>Firma Digital de Autenticidad (SHA-256)</th><th>Estado de Reserva</th></tr></thead><tbody><tr><td><code>src/lib/depreciationEngine.ts</code></td><td>Motor Matemático y Actuarial de Devaluación (Continuo $e^{-\lambda t}$, Discreto, NIC 16, DDB, Terborgh)</td><td>TypeScript Nativo</td><td>361</td><td>Líneas 1–40 y 330–361</td><td><code>AEC12FAE1668DCF24F38F159C73C3C6690A1715F55D22469ECA0538FA0B8B044</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/lib/recommendationEngine.ts</code></td><td>Motor de Recomendación por Presupuesto, Ponderación Comercial y Análisis de Segmento</td><td>TypeScript Nativo</td><td>311</td><td>Líneas 1–45 y 275–311</td><td><code>9BBDC9CECBCD57489D343676C98470AA307E22427D7F00099B11DD2CCF425E2E</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/data/sicFasecoldaData.ts</code></td><td>Base de Datos Oficial Robusta de 51 Vehículos, Retenciones Históricas y Baremo Fasecolda/SIC</td><td>TypeScript Nativo</td><td>1,110</td><td>Líneas 1–45 y 1070–1110</td><td><code>375001BD2689FC3F4BCE96A5CE8B48124B45EBAA972C04FBA3D69176D869DD3F</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/types/vehicle.ts</code></td><td>Modelado de Entidades de Dominio, Parámetros Vehiculares, Proyecciones y Tipos Actuariales</td><td>TypeScript Types</td><td>108</td><td>Líneas 1–35 y 75–108</td><td><code>E5DBA454DB9D9880871E771599F490808BEE96FF968EE0C21A1660A52E35E9D9</code></td><td>Registrado Completo</td></tr><tr><td><code>src/lib/chartSetup.ts</code></td><td>Configuración y Registro Global de Componentes de Renderizado Vectorial Chart.js</td><td>TypeScript Nativo</td><td>38</td><td>Líneas 1–38 (Completo)</td><td><code>A267AFE65F51F37BFB18CCDF32528F069AA1B0629315EBF74D0A51C576DBCFF8</code></td><td>Registrado Completo</td></tr><tr><td><code>src/App.tsx</code></td><td>Enrutador Central de Pestañas, Orquestador de Estado Global y Control de Notificaciones</td><td>React 19 / TSX</td><td>340</td><td>Líneas 1–45 y 300–340</td><td><code>A651C81B66149017D1E96C5C4BB9F34AA5B53279BA216FA0F34D4430D1E1671C</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/BudgetRecommender.tsx</code></td><td>Asesor Inteligente de Compra por Presupuesto, Justificación Comercial y Análisis Actuarial</td><td>React 19 / TSX</td><td>618</td><td>Líneas 1–45 y 575–618</td><td><code>60DAE4FED249F6D882F8E8DFF0EAA0083BC51A1EB5A1A0A418D76ED71852CF77</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/SingleVehicleCalculator.tsx</code></td><td>Valuador Actuarial Individual, Panel de Sliders, Matriz Temporal y Desglose de Desgaste</td><td>React 19 / TSX</td><td>885</td><td>Líneas 1–45 y 845–885</td><td><code>DAF1E742670973E5A06220C9364B2917A0D3E97B8947ADC4A7AF6E664023ECFF</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/VehicleComparison.tsx</code></td><td>Comparador Multi-Vehículo en Horizontes de 3 a 10 Años con Trazas de Retención, Precios y TCO</td><td>React 19 / TSX</td><td>351</td><td>Líneas 1–40 y 315–351</td><td><code>02EA67338D3C4F824BED1F038B35EC5ED3D0B6B8B606B65F46E9E58051E2E454</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/SicFasecoldaExplorer.tsx</code></td><td>Explorador Filtrable de Tablas Oficiales con Búsqueda en Vivo y Filtros de Segmento</td><td>React 19 / TSX</td><td>171</td><td>Líneas 1–35 y 135–171</td><td><code>F6EE2994675F9375761B2E3CB68099A0614C7235457327D4B5321BACE7A09382</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/DepreciationChart.tsx</code></td><td>Renderizador de Curvas de Decaimiento Financiero (Nominal, Deflactado, NIC 16, Salvamento)</td><td>React 19 / TSX</td><td>147</td><td>Líneas 1–35 y 115–147</td><td><code>509F733151C87781BE25FF5B27D4AA1D9229D43921CAAC5BFFF1D3D9AC3C0536</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/TerborghChart.tsx</code></td><td>Renderizador Gráfico de Curva de Terborgh y Costo Medio Anual Acumulado ($AAC$)</td><td>React 19 / TSX</td><td>139</td><td>Líneas 1–35 y 105–139</td><td><code>664557CF372F4DF742CD0979333BBB92FC14BB04C09A06FFBBB9C62E91654C9D</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/ValuationReportModal.tsx</code></td><td>Generador de Dictamen Pericial de Avalúo Formateado para Impresión y Emisión de PDF</td><td>React 19 / TSX</td><td>235</td><td>Líneas 1–40 y 195–235</td><td><code>6C79EE6F5C2FBB64D4C5DCC7E4D4425F2ADA3B1111CA36A990FF466C59158D68</code></td><td>Reservado (Reserva Parcial Intermedia)</td></tr><tr><td><code>src/components/EconomicTheoryGuide.tsx</code></td><td>Módulo de Pedagogía Económica, Fundamentación de Fórmulas y Marco Normativo NIIF</td><td>React 19 / TSX</td><td>126</td><td>Líneas 1–30 y 95–126</td><td><code>767887CF7D4F5C84933406ED4D58C6A007A318ACCF1EF82D0D036A1F4DC4350C</code></td><td>Registrado Parcial</td></tr><tr><td><code>src/components/Header.tsx</code></td><td>Cabecera Institucional, Selector de Moneda COP/USD y Navegación entre Módulos</td><td>React 19 / TSX</td><td>164</td><td>Líneas 1–35 y 130–164</td><td><code>1ECFBA2D40618EB45CF861B137FA14E1C4137249EA74AB0CC9917A19CCB0AB3D</code></td><td>Registrado Parcial</td></tr><tr><td><code>src/components/MetricCard.tsx</code></td><td>Tarjeta Analítica de Métricas Financieras con Indicador de Tendencia y Badge</td><td>React 19 / TSX</td><td>87</td><td>Líneas 1–30 y 60–87</td><td><code>1C3C11EB4E9D8F069510CEE8F881FB552ED5BE392E3AB9C75D8F115CF5ACFEB7</code></td><td>Registrado Completo</td></tr><tr><td><code>src/index.css</code></td><td>Sistema de Diseño Global, Estilos de Impresión (@media print) y Variables CSS</td><td>CSS3 / Tailwind v4</td><td>146</td><td>Líneas 1–30 y 115–146</td><td><code>C223D24D06F147C70964D6FBE2EF78DE83173F4F715353368B4D027204C72700</code></td><td>Registrado Parcial</td></tr><tr><td><code>src/App.css</code></td><td>Reglas de Animación Específicas y Micro-transiciones Fluidas</td><td>CSS3</td><td>158</td><td>Líneas 1–30 y 125–158</td><td><code>6E25A776D3E8102DA5BACB3CB99F4A5FC662A2E01E6143140671A556D28C3D5C</code></td><td>Registrado Parcial</td></tr><tr><td><code>src/main.tsx</code></td><td>Punto de Entrada de la Aplicación y Montaje en el DOM de React 19</td><td>TypeScript Nativo</td><td>9</td><td>Líneas 1–9 (Completo)</td><td><code>6E9E5807FCBD48B75A96DB5CBEF36C996262196BE42E6D4760DC86BABBE61AD2</code></td><td>Registrado Completo</td></tr><tr><td><code>scripts/verify-actuarial-engine.ts</code></td><td>Suite de Pruebas Unitarias del Motor Actuarial, Terborgh y Aislamiento Contable</td><td>TypeScript Nativo</td><td>75</td><td>Líneas 1–75 (Completo)</td><td><code>44E7F9ED1406ADBA39C8A9C8F7860BCAE0B4A224B1F80B9FD753209C5082BDD3</code></td><td>Registrado Completo</td></tr><tr><td><code>scripts/verify-recommendation-engine.ts</code></td><td>Suite de Pruebas Automatizadas del Motor de Recomendación por Presupuesto</td><td>TypeScript Nativo</td><td>39</td><td>Líneas 1–39 (Completo)</td><td><code>7D8B96F2B61B19829AB8BE18B4E7B0E2335095E9960B060C65088E276655D60F</code></td><td>Registrado Completo</td></tr><tr><td><code>public/icons.svg</code></td><td>Sprite Vectorial de Identificadores y Marcadores Visuales</td><td>SVG Vectorial</td><td>24</td><td>Líneas 1–24 (Completo)</td><td><code>B45FA506195CFCDEF406BA9F0C77B36DDC1A7C224040926EC70ABC2FDEA7B93A</code></td><td>Registrado Completo</td></tr></tbody></table>
+<hr>
+<h2>3. SECCIÓN I: MUESTREO REPRESENTATIVO DEL MOTOR ACTUARIAL (<code>src/lib/depreciationEngine.ts</code>)</h2>
+<h3>3.1 Encabezado y Factores de Desgaste (Líneas 1 a 40)</h3>
+<pre><code class="language-typescript">/**
+ * AutoValua Pro — Motor Matemático y Actuarial de Depreciación Vehicular
+ * Incorpora:
+ * - Ley de decaimiento exponencial continuo V(t) = V0 * e^(-λt)
+ * - Decaimiento discreto compuesto con shock de rodamiento (concesionario)
+ * - Métodos contables NIIF (Línea Recta y Saldo Decreciente DDB)
+ * - Tablas actuariales de referencia Fasecolda / SIC
+ * - Factores multivariables de desgaste físico, kilometraje y mercado
+ * - Curva de Terborgh y Costo Total de Propiedad (TCO) sin doble conteo
+ */
+
+import type {
+  VehicleParameters,
+  VehicleAnalysisResult,
+  YearProjection,
+  ModelType,
+  OfficialSicFasecoldaVehicle
+} from &#039;../types/vehicle&#039;;
+import { FASECOLDA_SIC_DATABASE } from &#039;../data/sicFasecoldaData&#039;;
+
+/**
+ * Calcula los multiplicadores de desgaste basados en condiciones operativas
+ */
+export function calculateWearBreakdown(v: VehicleParameters) {
+  // 1. Factor de Kilometraje (Ref: 15,000 km/año estándar Colombia / Latam)
+  const standardKm = 15000;
+  const kmDiff = v.annualMileageKm - standardKm;
+  let kmMultiplier = 1.0 - (kmDiff / 15000) * 0.12;
+  kmMultiplier = Math.min(Math.max(kmMultiplier, 0.72), 1.08);
+  const mileagePenaltyPct = Number(((1 - kmMultiplier) * 100).toFixed(1));
+
+  // 2. Factor de Mantenimiento
+  let maintenanceFactor = 1.0;
+  switch (v.maintenance) {
+    case &#039;excelente&#039;: maintenanceFactor = 1.04; break;
+    case &#039;bueno&#039;: maintenanceFactor = 1.00; break;
+    case &#039;regular&#039;: maintenanceFactor = 0.92; break;
+    case &#039;deficiente&#039;: maintenanceFactor = 0.82; break;
+    default: maintenanceFactor = 1.00; break;
+  }</code></pre>
+<h3>3.2 Cierre y Formateadores Numéricos (Líneas 330 a 361)</h3>
+<pre><code class="language-typescript">  // Determinación Rigurosa del Año Óptimo de Reemplazo (Curva de Terborgh)
+  let optimalReplacementYear = 5;
+  let minAverageAnnualCost = Infinity;
+
+  projections.forEach((proj) =&gt; {
+    if (proj.averageAnnualCost &lt; minAverageAnnualCost) {
+      minAverageAnnualCost = proj.averageAnnualCost;
+      optimalReplacementYear = proj.year;
+    }
+  });
+
+  return {
+    vehicle,
+    currentEstimatedValue: currentEstValue,
+    targetYearEstimatedValue,
+    projections,
+    optimalReplacementYear,
+    totalDepreciationAtTargetYear: totalDeprecAtTarget,
+    totalTCOAtTargetYear: totalTCOAtTarget,
+    effectiveAnnualDecayRatePct,
+    salvageValue,
+    combinedWearMultiplier: wearMultiplier,
+    isFasecoldaMatched,
+    breakdown
+  };
+}
+
+export function formatCurrency(amount: number, currency: &#039;COP&#039; | &#039;USD&#039; = &#039;COP&#039;): string {
+  if (currency === &#039;COP&#039;) {
+    return new Intl.NumberFormat(&#039;es-CO&#039;, {
+      style: &#039;currency&#039;,
+      currency: &#039;COP&#039;,
+      maximumFractionDigits: 0
+    }).format(amount);
+  }
+  return new Intl.NumberFormat(&#039;en-US&#039;, {
+    style: &#039;currency&#039;,
+    currency: &#039;USD&#039;,
+    maximumFractionDigits: 0
+  }).format(amount);
+}</code></pre>
+<hr>
+<h2>4. SECCIÓN II: MUESTREO REPRESENTATIVO DEL RECOMENDADOR (<code>src/lib/recommendationEngine.ts</code>)</h2>
+<h3>4.1 Encabezado y Conversiones de Presupuesto (Líneas 1 a 45)</h3>
+<pre><code class="language-typescript">import type { 
+  OfficialSicFasecoldaVehicle, 
+  VehicleParameters, 
+  VehicleAnalysisResult,
+  FuelType 
+} from &#039;../types/vehicle&#039;;
+import { FASECOLDA_SIC_DATABASE } from &#039;../data/sicFasecoldaData&#039;;
+import { analyzeVehicleDepreciation, formatCurrency } from &#039;./depreciationEngine&#039;;
+
+export interface BudgetRecommendationParams {
+  budget: number;
+  currency: &#039;COP&#039; | &#039;USD&#039;;
+  tolerancePct?: number;
+  selectedCategory?: string;
+  selectedFuel?: string;
+  priority?: &#039;commercial&#039; | &#039;retention&#039; | &#039;tco&#039; | &#039;balanced&#039;;
+}
+
+export interface RecommendedVehicleItem {
+  officialVehicle: OfficialSicFasecoldaVehicle;
+  vehicleParams: VehicleParameters;
+  analysis: VehicleAnalysisResult;
+  priceDiff: number;
+  priceDiffPct: number;
+  commercialScore: number;
+  retentionScore: number;
+  compositeScore: number;
+  badgeTag: string;
+  segmentAvgDecayPct: number;
+  annualSavingsVsSegment: number;
+  whyRecommendedSummary: string;
+  detailedWhy: {
+    marketLiquidity: string;
+    depreciationAdvantage: string;
+    operatingCostAdvantage: string;
+    resaleSecurity: string;
+  };
+}</code></pre>
+<h3>4.2 Cierre y Ensamblador de Resultados (Líneas 275 a 311)</h3>
+<pre><code class="language-typescript">  // Ordenamos de mayor a menor puntuación compuesta
+  evaluatedItems.sort((a, b) =&gt; b.compositeScore - a.compositeScore);
+
+  const primaryRecommendation = evaluatedItems[0] || null;
+  const alternativeRecommendations = evaluatedItems.slice(1, 4);
+
+  return {
+    budgetInCOP,
+    budgetFormatted: formatCurrency(budget, currency),
+    currency,
+    rangeMin,
+    rangeMax,
+    tolerancePct: effectiveTolerance,
+    totalMatches: evaluatedItems.length,
+    primaryRecommendation,
+    alternativeRecommendations,
+    allCandidates: evaluatedItems
+  };
+}</code></pre>
+<hr>
+<h2>5. SECCIÓN III: MUESTREO DE LA BASE DE DATOS OFICIAL (<code>src/data/sicFasecoldaData.ts</code>)</h2>
+<h3>5.1 Encabezado y Registro de Segmentos de Entrada (Líneas 1 a 45)</h3>
+<pre><code class="language-typescript">import type { OfficialSicFasecoldaVehicle } from &#039;../types/vehicle&#039;;
+
+/**
+ * Base de Datos Oficial Robusta de Referencia: Fasecolda / SIC / ANDEMOS / MinTransporte (Colombia)
+ * Actualizada con los vehículos más comerciales y representativos de cada segmento en Colombia (2024-2026).
+ * Incluye histórico actuarial de retención a 1, 2, 3, 4, 5, 6, 7, 8, 9 y 10 años, métricas de liquidez de reventa,
+ * días promedio en vitrina y argumentos técnicos/financieros de recomendación por presupuesto.
+ */
+export const FASECOLDA_SIC_DATABASE: OfficialSicFasecoldaVehicle[] = [
+  // ==========================================
+  // SEGMENTO ECONÓMICO Y DE ENTRADA ($45M - $75M)
+  // ==========================================
+  {
+    code: &#039;FAS-REN-KWD-OUT&#039;,
+    brand: &#039;Renault&#039;,
+    line: &#039;Kwid Outsider 1.0L&#039;,
+    category: &#039;Hatchback&#039;,
+    fuelType: &#039;gasolina&#039;,
+    referencePriceNew: 56000000,
+    historicalRetentionPct: [80.0, 69.5, 60.5, 52.8, 46.0, 40.0, 34.8, 30.2, 26.0, 22.5],
+    typicalAnnualDecayPct: 12.5,
+    marketLiquidityScore: &#039;Alta&#039;,
+    reliabilityScore: 8.2,
+    commercialRank: 8,
+    resaleDaysAverage: 22,
+    whyRecommended: &#039;Líder en ventas de entrada por su precio sumamente asequible y excelente despeje al suelo (18.5 cm) para vías colombianas. Mantenimiento y repuestos hiper económicos disponibles en cualquier rincón del país.&#039;,
+    pros: [
+      &#039;Repuestos y filtros de bajo costo en cualquier almacén&#039;,
+      &#039;Consumo promedio sobresaliente de 55-60 km/galón&#039;,
+      &#039;Despeje al suelo estilo crossover para baches urbanos&#039;
+    ],
+    targetAudience: &#039;Primer vehículo, presupuesto ajustado, movilidad urbana y estudiantes&#039;
+  },</code></pre>
+<hr>
+<h2>6. CONCLUSIÓN REGISTRAL Y FIRMA DEL TITULAR</h2>
+<p>El presente extracto constituye el reflejo fidedigno de los componentes de código fuente que integran el software <strong>AutoValua Pro (Versión 2.5.0)</strong>. Todas las firmas de autenticidad criptográfica SHA-256 han sido verificadas en el entorno local de desarrollo de Manizales, Caldas, Colombia.</p>
+<p><strong>TITULAR DE LA OBRA Y AUTOR:</strong>  </p>
+<p><strong>DANIEL VICK</strong>  </p>
+<p><em>Ingeniero y Creador del Software</em>  </p>
+<p><em>Dirección Nacional de Derecho de Autor (DNDA) — República de Colombia</em></p>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.mermaid) {
+                mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+            }
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+    </script>
+</body>
+</html>
